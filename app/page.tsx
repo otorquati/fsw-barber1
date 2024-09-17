@@ -7,38 +7,7 @@ import { Card, CardContent } from "./_components/ui/card";
 import { db } from "./_lib/prisma";
 import BarbershopItem from "./_components/barbershop-item";
 import BookingItem from "./_components/booking-item";
-
-interface QuickSearchOption {
-  imageurl: string;
-  title: string;
-}
-
-const quickSearchOptions: QuickSearchOption[] = [
-  {
-    imageurl: "/cabelo.svg",
-    title: "Cabelo",
-  },
-  {
-    imageurl: "/barba.svg",
-    title: "Barba",
-  },
-  {
-    imageurl: "/hidratacao.svg",
-    title: "Hidratação",
-  },
-  {
-    imageurl: "/sobrancelha.svg",
-    title: "Sobrancelha",
-  },
-  {
-    imageurl: "/massagem.svg",
-    title: "Massagem",
-  },
-  {
-    imageurl: "/acabamento.svg",
-    title: "Acabemento",
-  },
-];
+import { quickSearchOptions } from "./_constants/quickSearchItems";
 
 const Home = async () => {
   // chamar banco de dados
