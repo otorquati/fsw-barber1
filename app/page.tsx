@@ -4,14 +4,50 @@ import { Button } from "./_components/ui/button";
 import { Input } from "./_components/ui/input";
 import Image from "next/image";
 import { Card, CardContent } from "./_components/ui/card";
-import { Badge } from "./_components/ui/badge";
-import { Avatar, AvatarImage } from "./_components/ui/avatar";
 import { db } from "./_lib/prisma";
 import BarbershopItem from "./_components/barbershop-item";
+import BookingItem from "./_components/booking-item";
+
+interface QuickSearchOption {
+  imageurl: string;
+  title: string;
+}
+
+const quickSearchOptions: QuickSearchOption[] = [
+  {
+    imageurl: "/cabelo.svg",
+    title: "Cabelo",
+  },
+  {
+    imageurl: "/barba.svg",
+    title: "Barba",
+  },
+  {
+    imageurl: "/hidratacao.svg",
+    title: "Hidratação",
+  },
+  {
+    imageurl: "/sobrancelha.svg",
+    title: "Sobrancelha",
+  },
+  {
+    imageurl: "/massagem.svg",
+    title: "Massagem",
+  },
+  {
+    imageurl: "/acabamento.svg",
+    title: "Acabemento",
+  },
+];
 
 const Home = async () => {
   // chamar banco de dados
   const barbershops = await db.barbershop.findMany({});
+  const popularbarbershops = await db.barbershop.findMany({
+    orderBy: {
+      name: "desc",
+    },
+  });
   return (
     <div>
       <Header />
@@ -27,6 +63,20 @@ const Home = async () => {
           </Button>
         </div>
 
+        {/* BUSCA RÁPIDA - CATEGORIAS */}
+        <div className="mt-6 flex gap-3 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
+          {quickSearchOptions.map((option) => (
+            <Button className="gap-2" variant="secondary" key={option.title}>
+              <Image
+                src={option.imageurl}
+                alt={option.title}
+                width={16}
+                height={16}
+              />
+              {option.title}
+            </Button>
+          ))}
+        </div>
         {/* IMAGEM */}
         <div className="relative mt-6 h-[150px] w-full">
           <Image
@@ -37,32 +87,8 @@ const Home = async () => {
           />
         </div>
 
-        {/* AGENDAMENTO */}
-        <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
-          Agendamentos
-        </h2>
-        <Card>
-          <CardContent className="mb-3 mt-6 flex justify-between p-0">
-            {/* ESQUERDA */}
-            <div className="flex flex-col gap-2 py-5 pl-5">
-              <Badge className="w-fit">Confirmado</Badge>
-              <h3 className="font-semibold">Corte de Cabelo</h3>
-              <div className="flex items-center gap-2">
-                <Avatar className="h-6 w-6">
-                  <AvatarImage src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png" />
-                </Avatar>
-                <p className="text-sm">Barbearia TorQuality</p>
-              </div>
-            </div>
-
-            {/* DIREITA */}
-            <div className="flex flex-col items-center justify-center border-l-2 border-solid p-5">
-              <p className="text-sm">Agosto</p>
-              <p className="text-2xl">05</p>
-              <p className="text-sm">20:00</p>
-            </div>
-          </CardContent>
-        </Card>
+        {/*AGENDAMENTO */}
+        <BookingItem />
 
         {/* RECOMENDADOS */}
         <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
@@ -73,6 +99,26 @@ const Home = async () => {
             <BarbershopItem key={barbershop.id} barbershop={barbershop} />
           ))}
         </div>
+
+        {/* POPULARES */}
+        <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
+          Populares
+        </h2>
+        <div className="flex gap-4 overflow-auto [&::-webkit-scrollbar]:hidden">
+          {popularbarbershops.map((barbershop) => (
+            <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+          ))}
+        </div>
+        {/* RODAPÉ*/}
+        <footer>
+          <Card>
+            <CardContent className="px-5 py-6">
+              <p className="text-sm text-gray-400">
+                © Copyright <span className="font-bold">FSW-Barber</span>
+              </p>
+            </CardContent>
+          </Card>
+        </footer>
       </div>
     </div>
   );
