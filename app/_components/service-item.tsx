@@ -27,7 +27,7 @@ const ServiceItem = ({ service }: ServiceItemProps) => {
           <p className="text-sm font-bold text-gray-400">
             {service.description}
           </p>
-          {/* PREÇCO E BOTÃO */}
+          {/* PREÇO E BOTÃO */}
           <div className="flex items-center justify-between">
             <p className="text-sm font-bold text-primary">
               {Intl.NumberFormat("pt-BR", {
