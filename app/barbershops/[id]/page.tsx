@@ -7,6 +7,7 @@ import ServiceItem from "@/app/_components/service-item";
 import PhoneItem from "@/app/_components/phone-item";
 import { Sheet, SheetTrigger } from "@/app/_components/ui/sheet";
 import SidebarSheet from "@/app/_components/sidebar-sheet";
+import Link from "next/link";
 interface BarbershopPageProps {
   params: {
     id: string;
@@ -49,7 +50,9 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
           className="absolute left-4 top-4"
           asChild
         >
-          <ChevronLeftIcon />
+          <Link href="/">
+            <ChevronLeftIcon />
+          </Link>
         </Button>
         {/* MENU */}
         <Sheet>
@@ -89,7 +92,11 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
         </h2>
         <div className="space-y-3">
           {barbershop.services.map((service) => (
-            <ServiceItem key={service.id} service={service} />
+            <ServiceItem
+              key={service.id}
+              barbershop={barbershop}
+              service={service}
+            />
           ))}
         </div>
       </div>
