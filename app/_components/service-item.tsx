@@ -20,6 +20,8 @@ import { createBooking } from "../_actions/creating-booking";
 import { getBookings } from "../_actions/get-bookings";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { Dialog, DialogContent } from "./ui/dialog";
+import SignInDialog from "./sign-in-dialog";
 
 interface ServiceItemProps {
   service: BarbershopService;
@@ -68,6 +70,7 @@ const getTimeList = (bookings: Booking[]) => {
 };
 
 const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
+  const [signInDialogIsOpen, setSignInDialogIsOpen] = useState(false);
   const { data } = useSession();
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<string | undefined>(
@@ -89,7 +92,14 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
     fetch();
   }, [selectedDay, service.id]);
 
-  const handleBookingSheetIsOpenChange = () => {
+  const handleBookingClick = () => {
+    if (data?.user) {
+      return setBookingSheetIsOpen(true);
+    }
+    return setSignInDialogIsOpen(true);
+  };
+
+  const handleBookingSheetOpenChange = () => {
     setSelectedDay(undefined);
     setSelectedTime(undefined);
     setDayBookings([]);
@@ -155,12 +165,12 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
               </p>
               <Sheet
                 open={bookingSheetIsOpen}
-                onOpenChange={handleBookingSheetIsOpenChange}
+                onOpenChange={handleBookingSheetOpenChange}
               >
                 <Button
                   variant="secondary"
                   size="sm"
-                  onClick={() => setBookingSheetIsOpen(true)}
+                  onClick={handleBookingClick}
                 >
                   Reservar
                 </Button>
@@ -174,6 +184,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                       locale={ptBR}
                       selected={selectedDay}
                       onSelect={handleDateSelect}
+                      fromDate={new Date()}
                       styles={{
                         head_cell: {
                           width: "100%",
@@ -267,6 +278,15 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
           </div>
         </CardContent>
       </Card>
+
+      <Dialog
+        open={signInDialogIsOpen}
+        onOpenChange={(open) => setSignInDialogIsOpen(open)}
+      >
+        <DialogContent className="w-[90%]">
+          <SignInDialog />
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

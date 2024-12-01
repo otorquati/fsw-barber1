@@ -1,4 +1,4 @@
-const { PrismaClient } = require("@prisma/client");
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -123,7 +123,7 @@ async function seedDatabase() {
           data: {
             name: service.name,
             description: service.description,
-            price: service.price,
+            price: JSON.parse(JSON.stringify(service.price)),
             barbershop: {
               connect: {
                 id: barbershop.id,

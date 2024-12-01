@@ -26,7 +26,7 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
   });
 
   {
-    /* BLOQUEIA IDs NÃO CDASTRADOS */
+    /* BLOQUEIA IDs NÃO CADASTRADOS */
   }
   if (!barbershop) {
     return notFound();
