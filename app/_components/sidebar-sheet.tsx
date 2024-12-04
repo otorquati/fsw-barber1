@@ -1,12 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import { Button } from "./ui/button";
 import { CalendarIcon, HomeIcon, LogInIcon, LogOutIcon } from "lucide-react";
-
+import { SheetClose, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet";
 import { quickSearchOptions } from "../_constants/quickSearchItems";
 import Link from "next/link";
-import { SheetClose, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet";
+import Image from "next/image";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { useSession, signOut } from "next-auth/react";
 import { Avatar, AvatarImage } from "./ui/avatar";
@@ -49,34 +48,32 @@ const SidebarSheet = () => {
           </>
         )}
       </div>
+
       <div className="flex flex-col gap-2 border-b border-solid py-5">
-        <Button className="justify-start gap-2" variant="ghost" asChild>
-          <SheetClose asChild>
+        <SheetClose asChild>
+          <Button className="justify-start gap-2" variant="ghost" asChild>
             <Link href="/">
               <HomeIcon size={18} />
               Início
             </Link>
-          </SheetClose>
-        </Button>
-        <Button className="justify-start gap-2" variant="ghost">
-          <CalendarIcon size={18} />
-          Agendamentos
+          </Button>
+        </SheetClose>
+        <Button className="justify-start gap-2" variant="ghost" asChild>
+          <Link href="/bookings">
+            <CalendarIcon size={18} />
+            Agendamentos{" "}
+          </Link>
         </Button>
       </div>
 
       <div className="flex flex-col gap-2 border-b border-solid py-5">
         {quickSearchOptions.map((option) => (
           <SheetClose key={option.title} asChild>
-            <Button
-              key={option.title}
-              className="justify-start gap-2"
-              variant="ghost"
-              asChild
-            >
+            <Button className="justify-start gap-2" variant="ghost" asChild>
               <Link href={`/barbershops?service=${option.title}`}>
                 <Image
                   alt={option.title}
-                  src={option.imageurl}
+                  src={option.imageUrl}
                   height={18}
                   width={18}
                 />
@@ -86,6 +83,7 @@ const SidebarSheet = () => {
           </SheetClose>
         ))}
       </div>
+
       {data?.user && (
         <div className="flex flex-col gap-2 py-5">
           <Button
