@@ -13,10 +13,10 @@ import SignInDialog from "./sign-in-dialog";
 
 const SidebarSheet = () => {
   const { data } = useSession();
-
   const handleLogoutClick = () => signOut();
+
   return (
-    <SheetContent>
+    <SheetContent className="overflow-y-auto">
       <SheetHeader>
         <SheetTitle>Menu</SheetTitle>
       </SheetHeader>
